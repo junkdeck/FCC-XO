@@ -1,0 +1,39 @@
+::-moz-selection{background:transparent;}
+::selection{background:transparent;}
+
+*{
+	margin:0;
+	padding:0;
+}
+html,body{
+	height:100%;
+	background: #daf3f6;
+}
+.wrapper{
+	display: flex;
+
+	width:80%;
+	height:100%;
+
+	margin:auto;
+
+	background: #c2f4ea;
+}
+
+.checkboard{
+	width: 500px;
+	height: 500px;
+}
+
+.grid-square{
+	display: flex;
+	float:left;
+	background: #b8e028;
+
+	box-shadow: 0 0 0px 5px #98bd16;
+}
+
+.flex-center{
+	justify-content: center;
+	align-items: center;
+}
