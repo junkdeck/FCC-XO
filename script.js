@@ -127,6 +127,8 @@ $('.checkboard .grid-square').on('click', function(){
     currentMark = 0;
     marked = 0;
     winner = null;
+    $(".messages").empty();
+    $(".bottom").empty();
   }else if(gameRunning){
     marked = placeMark(currentMark, $(this), playField);
 
@@ -149,7 +151,6 @@ $('.checkboard .grid-square').on('click', function(){
         winner = checkWinner(playField, currentMark);
       }
       currentMark = toggleMark(currentMark);
-      $(".messages").empty().append("<h1>"+players[currentMark]+"'s turn!</h1>");
     }
 
     if(winner != null){
