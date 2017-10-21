@@ -110,7 +110,7 @@ createGrid(gridSize, boxSize);
 $('.checkboard .grid-square').on('click', function(){
   if(!gameRunning){
     $('.grid-square').each(function(){
-      
+
     });
   }else if(gameRunning){
     marked = placeMark(currentMark, $(this));
@@ -139,6 +139,7 @@ $('.checkboard .grid-square').on('click', function(){
 
     if(winner != null){
       $(".messages").empty().append("<h1>"+players[winner]+" wins!</h1>");
+      $(".bottom").empty().append("<h2>Click play field to restart.</h2>");
       gameRunning = 0;
       return 0;
     }
