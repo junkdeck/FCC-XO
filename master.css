@@ -30,7 +30,8 @@ html,body{
 .grid-square{
 	display: flex;
 	float:left;
-	background: #BEDB39;
+	background: #004358;
+	color: #1F8A70;
 
 	box-shadow: 0 0 0px 5px #1F8A70;
 
