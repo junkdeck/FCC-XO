@@ -101,22 +101,34 @@ function AIMove(playField){
   }
 }
 
-var gameRunning = 1;
+var gameRunning = 0;
 var playField = new Array(9); // keeps track of marks on the field
 var playFieldFull;  // keeps track of empty spaces on playfield
 var players = ["X","O"];  // player names
 var winner = null;
 var marked = 0; // changes to 1 if a mark was actually placed on click
 var gridSize = 3;
-var currentMark = 0; //keeps track of current mark. 0 is O, 1 is X
+var currentMark = null; //keeps track of current mark. 0 is O, 1 is X
 var restartMessage = "Click any square to restart.";
 
 //dynamically creates a grid based on the user's monitor size
 var boxSize = setBoxSize(gridSize);
 createGrid(gridSize, boxSize);
 
+$('.bottom .selection .select-box').on('click', function(){
+  var id = $(this).attr('id');
+  if(id == 'x'){
+    currentMark = 0;
+  }else if(id == 'o'){
+    currentMark = 1;
+  }
+  $('.selection').fadeOut(185);
+  $('.bottom h2').fadeOut(185);
+  gameRunning = 1;
+});
+
 $('.checkboard .grid-square').on('click', function(){
-  if(!gameRunning){
+  if(!gameRunning && currentMark != null){
     $('.grid-square').each(function(){
       $(".field", this).fadeOut(185);
     });
