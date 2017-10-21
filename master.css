@@ -50,7 +50,9 @@ html,body{
 }
 .grid-square:active{
 	box-shadow: 0 0 0px 5px #1F8A70,
-				inset -2px -2px 0px 15px #1F8A70;;
+				inset -2px -2px 0px 15px #1F8A70;
+
+	font-size:28pt;
 }
 .grid-square:nth-of-type(1){
 	border-radius:20px 0 0 0;

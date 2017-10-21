@@ -108,9 +108,8 @@ var players = ["X","O"];  // player names
 var winner = null;
 var marked = 0; // changes to 1 if a mark was actually placed on click
 var gridSize = 3;
-//keeps track of whose turn it is. human1, human2, cpu
-var currentPlayer = 'human1'
 var currentMark = 0; //keeps track of current mark. 0 is O, 1 is X
+var restartMessage = "Click any square to restart.";
 
 //dynamically creates a grid based on the user's monitor size
 var boxSize = setBoxSize(gridSize);
@@ -155,13 +154,13 @@ $('.checkboard .grid-square').on('click', function(){
 
     if(winner != null){
       $(".messages").empty().append("<h1>"+players[winner]+" wins!</h1>");
-      $(".bottom").empty().append("<h2>Click play field to restart.</h2>");
+      $(".bottom").empty().append("<h2>"+restartMessage+"</h2>");
       gameRunning = 0;
       return 0;
     }
     if(playFieldFull){
       $(".messages").empty().append("<h1>It's a draw. Game Over!</h1>");
-      $(".bottom").empty().append("<h2>Click play field to restart.</h2>");
+      $(".bottom").empty().append("<h2>"+restartMessage+"</h2>");
       gameRunning = 0;
       return 0;
     }
