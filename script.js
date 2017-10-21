@@ -65,9 +65,10 @@ function checkWinner(playField, mark){
   return winner;
 }
 
-function placeMark(markSelector, destination){
+function placeMark(markSelector, destination, playField){
   var mark = '';
   var marked = 0;
+  var field = destination.attr('id');
   switch(markSelector){
     case 0:
     mark = 'X';
@@ -76,10 +77,10 @@ function placeMark(markSelector, destination){
     mark = 'O';
     break;
   }
-  if(destination.data('occupied') === 0){
+  if(playField[field] == null){
     destination.append(mark);
-    destination.data('occupied',1)
     marked = 1;
+    console.log(mark+" marked");
   }
   return marked;
 }
@@ -101,7 +102,6 @@ function AIMove(playField){
 }
 
 var gameRunning = 1;
-
 var playField = new Array(9); // keeps track of marks on the field
 var playFieldFull;  // keeps track of empty spaces on playfield
 var players = ["X","O"];  // player names
@@ -112,8 +112,6 @@ var gridSize = 3;
 var currentPlayer = 'human1'
 var currentMark = 0; //keeps track of current mark. 0 is O, 1 is X
 
-var roundCounter = 0;
-
 //dynamically creates a grid based on the user's monitor size
 var boxSize = setBoxSize(gridSize);
 createGrid(gridSize, boxSize);
@@ -121,12 +119,16 @@ createGrid(gridSize, boxSize);
 $('.checkboard .grid-square').on('click', function(){
   if(!gameRunning){
     $('.grid-square').each(function(){
-
+      $(this).empty();
     });
+    gameRunning = 1;
+    playFieldFull = 0;
+    playField = new Array(9);
+    currentMark = 0;
+    marked = 0;
+    winner = null;
   }else if(gameRunning){
-    roundCounter++;
-    console.log(roundCounter);
-    marked = placeMark(currentMark, $(this));
+    marked = placeMark(currentMark, $(this), playField);
 
     if(marked == 1){
       // sets placed mark in playfield array
@@ -134,19 +136,15 @@ $('.checkboard .grid-square').on('click', function(){
 
       // check winner
       winner = checkWinner(playField, currentMark);
-
       playFieldFull = checkPlayField(playField);
-      console.log("playfield full? :"+playFieldFull);
 
       // next players turn
       currentMark = toggleMark(currentMark);
       if(winner == null && !playFieldFull){
         // only do ai if player didnt win
         var ai = AIMove(playField);
+        placeMark(currentMark, $('#'+ai), playField);
         playField[ai] = currentMark;
-        placeMark(currentMark, $('#'+ai));
-        roundCounter++;
-        console.log(roundCounter);
         // check winner, again ( this time for the ai )
         winner = checkWinner(playField, currentMark);
       }
@@ -163,6 +161,8 @@ $('.checkboard .grid-square').on('click', function(){
     if(playFieldFull){
       $(".messages").empty().append("<h1>It's a draw. Game Over!</h1>");
       $(".bottom").empty().append("<h2>Click play field to restart.</h2>");
+      gameRunning = 0;
+      return 0;
     }
   }
 });
