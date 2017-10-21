@@ -108,7 +108,11 @@ var boxSize = setBoxSize(gridSize);
 createGrid(gridSize, boxSize);
 
 $('.checkboard .grid-square').on('click', function(){
-  if(gameRunning){
+  if(!gameRunning){
+    $('.grid-square').each(function(){
+      
+    });
+  }else if(gameRunning){
     marked = placeMark(currentMark, $(this));
 
     if(marked == 1){

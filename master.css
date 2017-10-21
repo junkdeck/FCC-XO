@@ -11,6 +11,7 @@ html,body{
 }
 .wrapper{
 	display: flex;
+	flex-direction: column;
 
 	width:80%;
 	height:100%;
@@ -47,12 +48,13 @@ html,body{
 	border-radius:0 0 20px 0;
 }
 
-.messages{
-	position:absolute;
-	top:5%;
+.messages,
+.bottom{
+	height:33%;
 }
 
 .flex-center{
+	display:flex;
 	justify-content: center;
 	align-items: center;
 }
