@@ -32,10 +32,16 @@ html,body{
 	float:left;
 	background: #004358;
 	color: #1F8A70;
-
-	box-shadow: 0 0 0px 5px #1F8A70;
-
 	font-size: 32pt;
+
+	box-shadow: 0 0 0px 5px #1F8A70,
+				inset 0 0 0px 0px #1F8A70;;
+
+	transition: 25ms ease-in;
+}
+.grid-square:active{
+	box-shadow: 0 0 0px 5px #1F8A70,
+				inset -2px -2px 0px 15px #1F8A70;;
 }
 .grid-square:nth-of-type(1){
 	border-radius:20px 0 0 0;
