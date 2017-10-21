@@ -78,7 +78,7 @@ function placeMark(markSelector, destination, playField){
     break;
   }
   if(playField[field] == null){
-    destination.append(mark);
+    destination.append("<span class='field'>"+mark+"</span>");
     marked = 1;
     console.log(mark+" marked");
   }
@@ -119,7 +119,7 @@ createGrid(gridSize, boxSize);
 $('.checkboard .grid-square').on('click', function(){
   if(!gameRunning){
     $('.grid-square').each(function(){
-      $(this).empty();
+      $(".field", this).fadeOut(185);
     });
     gameRunning = 1;
     playFieldFull = 0;
@@ -127,8 +127,8 @@ $('.checkboard .grid-square').on('click', function(){
     currentMark = 0;
     marked = 0;
     winner = null;
-    $(".messages").empty();
-    $(".bottom").empty();
+    $(".messages h1").fadeOut(185);
+    $(".bottom h2").fadeOut(185);
   }else if(gameRunning){
     marked = placeMark(currentMark, $(this), playField);
 
@@ -149,8 +149,8 @@ $('.checkboard .grid-square').on('click', function(){
         playField[ai] = currentMark;
         // check winner, again ( this time for the ai )
         winner = checkWinner(playField, currentMark);
+        currentMark = toggleMark(currentMark);
       }
-      currentMark = toggleMark(currentMark);
     }
 
     if(winner != null){

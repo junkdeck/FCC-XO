@@ -37,7 +37,16 @@ html,body{
 	box-shadow: 0 0 0px 5px #1F8A70,
 				inset 0 0 0px 0px #1F8A70;;
 
-	transition: 25ms ease-in;
+	transition: 45ms ease-in;
+}
+
+@keyframes fadein{
+	from {opacity:0;}
+	to   {opacity:1;}
+}
+
+.grid-square .field{
+	animation: fadein 185ms;
 }
 .grid-square:active{
 	box-shadow: 0 0 0px 5px #1F8A70,
@@ -59,6 +68,11 @@ html,body{
 .messages,
 .bottom{
 	height:33%;
+}
+
+.messages h1,
+.bottom h2{
+	animation: fadein 185ms;
 }
 
 .flex-center{
