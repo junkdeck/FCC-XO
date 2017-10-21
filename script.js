@@ -49,6 +49,7 @@ function checkWinner(playField, mark){
       playField[winningCombo[j][1]] == mark &&
       playField[winningCombo[j][2]] == mark){
         winner = mark;
+        console.log("winning move: "+winningCombo[j]);
     }
   }
   return winner;
@@ -73,6 +74,22 @@ function placeMark(markSelector, destination){
   return marked;
 }
 
+function getRandom(min,max){
+  return Math.random()*(max-min)+min;
+}
+
+function AIMove(playField){
+  var randField = Math.floor(getRandom(0,playField.length));
+
+  if(playField[randField] != null){
+    console.log(randField+" occupied.");
+    return AIMove(playField);
+  }else{
+    console.log(randField+" empty.");
+    return randField;
+  }
+}
+
 var gameRunning = 1;
 
 var playField = new Array(9); // keeps track of marks on the field
@@ -81,7 +98,7 @@ var winner = null;
 var marked = 0; // changes to 1 if a mark was actually placed on click
 var gridSize = 3;
 //keeps track of whose turn it is. human1, human2, cpu
-var currentPlayersTurn = 'human1'
+var currentPlayer = 'human1'
 var currentMark = 0; //keeps track of current mark. 0 is O, 1 is X
 
 var roundCounter = 0;
@@ -93,28 +110,36 @@ createGrid(gridSize, boxSize);
 $('.checkboard .grid-square').on('click', function(){
   if(gameRunning){
     marked = placeMark(currentMark, $(this));
-    playField[$(this).attr('id')] = currentMark;
 
-    // check winner
-    winner = checkWinner(playField, currentMark);
-    if(winner != null){
-      $(".messages").empty().append("<h1>"+players[currentMark]+" wins!</h1>");
-      gameRunning = 0;
-      return 0;
-    }
-
-    // next players turn
     if(marked == 1){
+      // sets placed mark in playfield array
+      playField[$(this).attr('id')] = currentMark;
+
+      // check winner
+      winner = checkWinner(playField, currentMark);
+
+      // next players turn
+      currentMark = toggleMark(currentMark);
+      if(winner == null){
+        // only do ai if player didnt win
+        var ai = AIMove(playField);
+        playField[ai] = currentMark;
+        placeMark(currentMark, $('#'+ai));
+        // check winner, again ( this time for the ai )
+        winner = checkWinner(playField, currentMark);
+      }
       currentMark = toggleMark(currentMark);
       $(".messages").empty().append("<h1>"+players[currentMark]+"'s turn!</h1>");
       roundCounter++;
-      console.log(roundCounter);
     }
 
-    // forfeit game
+    if(winner != null){
+      $(".messages").empty().append("<h1>"+players[winner]+" wins!</h1>");
+      gameRunning = 0;
+      return 0;
+    }
     if(roundCounter >= 9){
       $(".messages").empty().append("<h1>It's a draw. Game Over!</h1>");
     }
-
   }
 });
