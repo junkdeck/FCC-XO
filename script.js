@@ -3,6 +3,16 @@ function setBoxSize(gridSize){
   return parseFloat($('.checkboard').css('height'))/gridSize;
 }
 
+function checkPlayField(playField){
+  var playFieldFull = 1;
+  for(var i=0;i<playField.length;i++){
+    if(playField[i] == null){
+      playFieldFull = 0;
+    }
+  }
+  return playFieldFull;
+}
+
 function createGrid(gridSize, boxSize){
   //creates a grid based on the desired length of the sides and the size of each grid box
   var horGridCounter = 0;     //keeps track of how many horiz boxes have been made
@@ -82,10 +92,10 @@ function AIMove(playField){
   var randField = Math.floor(getRandom(0,playField.length));
 
   if(playField[randField] != null){
-    console.log(randField+" occupied.");
+    // field occupied, re-roll
     return AIMove(playField);
   }else{
-    console.log(randField+" empty.");
+    // field empty, return index to place mark
     return randField;
   }
 }
@@ -93,6 +103,7 @@ function AIMove(playField){
 var gameRunning = 1;
 
 var playField = new Array(9); // keeps track of marks on the field
+var playFieldFull;  // keeps track of empty spaces on playfield
 var players = ["X","O"];  // player names
 var winner = null;
 var marked = 0; // changes to 1 if a mark was actually placed on click
@@ -113,6 +124,8 @@ $('.checkboard .grid-square').on('click', function(){
 
     });
   }else if(gameRunning){
+    roundCounter++;
+    console.log(roundCounter);
     marked = placeMark(currentMark, $(this));
 
     if(marked == 1){
@@ -122,19 +135,23 @@ $('.checkboard .grid-square').on('click', function(){
       // check winner
       winner = checkWinner(playField, currentMark);
 
+      playFieldFull = checkPlayField(playField);
+      console.log("playfield full? :"+playFieldFull);
+
       // next players turn
       currentMark = toggleMark(currentMark);
-      if(winner == null){
+      if(winner == null && !playFieldFull){
         // only do ai if player didnt win
         var ai = AIMove(playField);
         playField[ai] = currentMark;
         placeMark(currentMark, $('#'+ai));
+        roundCounter++;
+        console.log(roundCounter);
         // check winner, again ( this time for the ai )
         winner = checkWinner(playField, currentMark);
       }
       currentMark = toggleMark(currentMark);
       $(".messages").empty().append("<h1>"+players[currentMark]+"'s turn!</h1>");
-      roundCounter++;
     }
 
     if(winner != null){
@@ -143,8 +160,9 @@ $('.checkboard .grid-square').on('click', function(){
       gameRunning = 0;
       return 0;
     }
-    if(roundCounter >= 9){
+    if(playFieldFull){
       $(".messages").empty().append("<h1>It's a draw. Game Over!</h1>");
+      $(".bottom").empty().append("<h2>Click play field to restart.</h2>");
     }
   }
 });
